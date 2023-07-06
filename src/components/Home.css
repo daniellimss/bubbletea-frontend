@@ -1,0 +1,28 @@
+.home {
+  background: /* url("http://i.imgur.com/Eor57Ae.jpg") */
+    url("../assets/bubbletea-bg-home.png") no-repeat fixed center center;
+
+  background-size: cover;
+  font-family: Montserrat;
+  height: 100%;
+}
+
+.listStyle {
+  list-style-type: none;
+}
+.centralDiv {
+  margin: 0 auto;
+}
+.col-flex {
+  display: flex;
+  flex-direction: column;
+}
+.marginTest {
+  position: relative;
+  margin-left: 45%;
+}
+
+.welcome {
+  font-weight: bold;
+  font-size: 2rem;
+}

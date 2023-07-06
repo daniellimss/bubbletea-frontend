@@ -1,0 +1,11 @@
+.centralDiv {
+  margin: 0 auto;
+}
+.dis-flex {
+  display: flex;
+  flex-direction: row;
+}
+.posting-title {
+  font-weight: bold;
+  font-size: 2rem;
+}
