@@ -30,26 +30,24 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Rating from '@mui/material/Rating';
 
-
-
-import { UserContext } from "../App";
+import { UserContext } from "./Login";
 
 /* import jwt from 'jsonwebtoken'; */
 
-
-const accessToken = localStorage.getItem('token');
-/* console.log(accessToken); */
+/* const accessToken = localStorage.getItem('token');
+console.log(accessToken); */
 const loggedInUser = localStorage.getItem('email')
-/* console.log(loggedInUser); */
-const userID = localStorage.getItem('userID')
-/* console.log(userID); */
-/* const user = localStorage.getItem('user');
-console.log(user); */
-
+console.log(loggedInUser);
+/* const userID = localStorage.getItem('userID')
+console.log(userID); */
+const user = localStorage.getItem('user');
+console.log(user);
 
 const Home = () => {
+	/* 	const userID = useContext(UserContext); */
+
 	const [authenticated, setAuthenticated] = useState(false);
-	const [authToken, setAuthToken] = useState("");
+	/* 	const [authToken, setAuthToken] = useState(null); */
 	const [userNickname, setUserNickname] = useState("");
 	const [userAvatar, setUserAvatar] = useState("");
 	const [postings, setPostings] = useState([]);
@@ -66,12 +64,16 @@ const Home = () => {
 	//Check authentication
 	useEffect(() => {
 		console.log("testing")
-		if (accessToken) {
+		const localToken = localStorage.getItem('token');
+		console.log(localToken);
+		const userID = localStorage.getItem('userID')
+		console.log(userID);
+		if (localToken) {
 			setAuthenticated(true);
 			console.log("You're authenticated")
 
 			const testAuth = async () => {
-				const tokenAuth = 'Bearer ' + localStorage.getItem('token')
+				const tokenAuth = 'Bearer ' + localToken /* localStorage.getItem('token') */
 				const data = await axios.get(`http://localhost:8000/users/jwtTest`, {
 					headers: {
 						Authorization: tokenAuth
@@ -84,7 +86,9 @@ const Home = () => {
 
 			/* Get users */
 			const getUser = async () => {
-				const tokenAuth = 'Bearer ' + localStorage.getItem('token')
+				/* const user_ID = localStorage.getItem('user_ID') */
+				const tokenAuth = 'Bearer ' + localToken /*localStorage.getItem('token')*/
+				console.log("looking for user", userID)
 				const dataUser = await axios.get(`http://localhost:8000/users/${userID}`, {
 					headers: {
 						Authorization: tokenAuth
@@ -104,8 +108,8 @@ const Home = () => {
 
 			/*Get all 4-star postings */
 			const getPostings = async () => {
-				const tokenAuth = 'Bearer ' + localStorage.getItem('token')
-				const dataPostings = await axios.get(`http://localhost:8000/postings/all?recent=true`, {
+				const tokenAuth = 'Bearer ' + localToken/* localStorage.getItem('token') */
+				const dataPostings = await axios.get(`http://localhost:8000/postings/all?recent=true&rating=4`, {
 					headers: {
 						Authorization: tokenAuth
 					}
@@ -233,6 +237,9 @@ const Home = () => {
 															together with your guests. Add 1 cup of frozen peas along with the mussels,
 															if you like. */}
 															{posting.postedDate}
+														</Typography>
+														<Typography>
+															{posting.shopLocation}
 														</Typography>
 														<Typography>
 															{posting.content}

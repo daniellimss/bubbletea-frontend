@@ -23,14 +23,15 @@ import Button from '@mui/material/Button';
 
 
 
-const accessToken = localStorage.getItem('token');
-/* console.log(accessToken); */
+/* const accessToken = localStorage.getItem('token');
+console.log(accessToken); */
 const loggedInUser = localStorage.getItem('email')
 /* console.log(loggedInUser); */
 const userID = localStorage.getItem('userID')
 /* console.log(userID); */
 /* const user = localStorage.getItem('user');
 console.log(user); */
+
 
 const Social = () => {
 
@@ -48,50 +49,60 @@ const Social = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (accessToken) {
-			setAuthenticated(true);
+		//if (accessToken) {
+		setAuthenticated(true);
 
-			const getUser = async () => {
-				const tokenAuth = 'Bearer ' + localStorage.getItem('token')
-				const dataUser = await axios.get(`http://localhost:8000/users/${userID}`, {
-					headers: {
-						Authorization: tokenAuth
-					}
+		const getUser = async () => {
+
+			/* const accessToken = localStorage.getItem('token'); */
+			/* console.log(accessToken); */
+			/* const loggedInUser = localStorage.getItem('email') */
+			/* console.log(loggedInUser); */
+			/* 		const userID = localStorage.getItem('userID') */
+			/* console.log(userID); */
+			/* const user = localStorage.getItem('user');
+			console.log(user); */
+
+
+			const tokenAuth = 'Bearer ' + localStorage.getItem('token')
+			const dataUser = await axios.get(`http://localhost:8000/users/${userID}`, {
+				headers: {
+					Authorization: tokenAuth
+				}
+			}
+			)
+				.then(res => {
+					console.log(res.data)
+					console.log(res.data.nickname)
+					setUserNickname(res.data.nickname)
+					setUserAvatar(res.data.avatar)
+				}).catch(err => console.log(err))
+		}
+		getUser();
+
+		/*Get allpostings */
+		const getAllPostings = async () => {
+			const tokenAuth = 'Bearer ' + localStorage.getItem('token')
+			const dataPostings = await axios.get(`http://localhost:8000/postings/all?recent=true`, {
+				headers: {
+					Authorization: tokenAuth
+				}
+			})
+				.then(res => {
+					console.log(res.data)//the entire data
+					console.log(res.data.everything) //the actual listing
+					setPostings(res.data.everything) //the actual listing
+
+					//The postingId (in the map function below) is
+					//actually derived by posting.id 
 				}
 				)
-					.then(res => {
-						console.log(res.data)
-						console.log(res.data.nickname)
-						setUserNickname(res.data.nickname)
-						setUserAvatar(res.data.avatar)
-					}).catch(err => console.log(err))
-
-			}
-			getUser();
-
-			/*Get allpostings */
-			const getAllPostings = async () => {
-				const tokenAuth = 'Bearer ' + localStorage.getItem('token')
-				const dataPostings = await axios.get(`http://localhost:8000/postings/all?recent=true`, {
-					headers: {
-						Authorization: tokenAuth
-					}
-				})
-					.then(res => {
-						console.log(res.data)//the entire data
-						console.log(res.data.everything) //the actual listing
-						setPostings(res.data.everything) //the actual listing
-
-						//The postingId (in the map function below) is
-						//actually derived by posting.id 
-					}
-					)
-			}
-			getAllPostings()
-
-
-
 		}
+		getAllPostings()
+
+
+
+		//}
 		/* else {
 			navigate(-1)
 		} */
@@ -174,6 +185,7 @@ const Social = () => {
 													<p>{posting.postedDate}</p>
 													<p><img src={posting.photoUrl} /></p>
 													<p>{posting.drinksName}</p>
+													<p>{posting.shopLocation}</p>
 													<p><Rating value={posting.rating} readOnly /></p>
 													<p><FormControlLabel
 														control={

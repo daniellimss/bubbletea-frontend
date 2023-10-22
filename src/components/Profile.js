@@ -17,72 +17,124 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const accessToken = localStorage.getItem('token');
+
+
+/* const accessToken = localStorage.getItem('token'); */
 /* console.log(accessToken); */
-const loggedInUser = localStorage.getItem('email')
+/* const loggedInUser = localStorage.getItem('email') */
 /* console.log(loggedInUser); */
-const userID = localStorage.getItem('userID')
+/* const userID = localStorage.getItem('userID') */
 /* console.log(userID); */
-const user = localStorage.getItem('user');
-console.log(user);
+/* const user = localStorage.getItem('user');
+console.log(user); */
 
 
 const Profile = () => {
 
 	const navigate = useNavigate();
 
-	const [userNickname, setUserNickname] = useState("");
+	/* const [userNickname, setUserNickname] = useState("");
 	const [userEmail, setUserEmail] = useState("");
 	const [userAvatar, setUserAvatar] = useState("");
 	const [userPassword, setUserPassword] = useState("");
 	const [userDob, setUserDob] = useState("");
-	const [userGender, setUserGender] = useState("");
+	const [userGender, setUserGender] = useState(""); */
 	const [callForm, setCallForm] = useState(false);
 
-	const [nickname, setNickname] = useState("");
+	const [userID, setUserID] = useState(localStorage.getItem('userID'));
+	const [nickname, setNickname] = useState(localStorage.getItem('nickname'));
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [avatar, setAvatar] = useState("");
 	const [dob, setDob] = useState("");
 	const [gender, setGender] = useState("");
 
+	/* const [state, setState] = useState({
+		nickname: "",
+		email: "",
+		password: "",
+		avatar: "",
+		dob: "",
+		gender: ""
+	}) */
+
 	useEffect(() => {
 		const getUser = async () => {
-			const tokenAuth = 'Bearer ' + localStorage.getItem('token')
+
+			const localToken = localStorage.getItem('token');
+			/* console.log(accessToken); */
+			const loggedInUser = localStorage.getItem('email')
+			/* console.log(loggedInUser); */
+			/* const userID = localStorage.getItem('userID') */
+			/* console.log(userID); */
+			const user = localStorage.getItem('user');
+			console.log(user);
+
+			const tokenAuth = 'Bearer ' + localToken /* localStorage.getItem('token') */
 			const dataUser = await axios.get(`http://localhost:8000/users/${userID}`, {
 				headers: {
 					Authorization: tokenAuth
 				}
-			}
-			)
+			})
 				.then(res => {
 					console.log(res.data)//full user data here
 					console.log(res.data.nickname)
-					setUserNickname(res.data.nickname)
-					setUserEmail(res.data.email)
-					setUserAvatar(res.data.avatar)
-					setUserPassword(res.data.password)
-					setUserDob(res.data.dob)
+					setNickname(res.data.nickname)
+					setEmail(res.data.email)
+					setAvatar(res.data.avatar)
+					setPassword(res.data.password)
+					setDob(res.data.dob)
 					if (res.data.gender) {
-						setUserGender("male")
+						setGender("male")
 					} else {
-						setUserGender("female")
+						setGender("female")
 					}
 
 				}).catch(err => console.log(err))
+
+			// const userData = dataUser.data;
+
+			// setNickname(userData.nickname);
+			// setEmail(userData.email);
+			// setAvatar(userData.avatar);
+			// setPassword(userData.password);
+			// setDob(userData.dob);
+			// setGender(userData.gender ? "male" : "female");
+
 		}
 		getUser();
-	})
+	}, [])
 
-	const callUpdateForm = (e) => {
+
+	//Update user details:
+	const callUpdateForm = () => {
+		console.log("calling form")
 		setCallForm(true)
 	}
 
 	const handleChange = (e) => {
+		// const { name, value } = e.target;
+
+		// if (name === 'nickname') {
+		// 	setNickname(value);
+		// } else if (name === 'email') {
+		// 	setEmail(value);
+		// } else if (name === "password") {
+		// 	setPassword(value);
+		// } else if (name === "avatar") {
+		// 	setAvatar(value);
+		// } else if (name === "dob") {
+		// 	setDob(value);
+		// } else if (name === "gender") {
+		// 	setGender(value);
+		// }
+
+		// const handleChange = (e) => {
 		if (e.target.name === 'nickname') {
 			setNickname(e.target.value);
 		} else if (e.target.name === 'email') {
@@ -93,29 +145,91 @@ const Profile = () => {
 			setAvatar(e.target.value);
 		} else if (e.target.name === "dob") {
 			setDob(e.target.value);
-		} else if (e.target.value === "female") {
+			console.log(dob)
+		}
+		// else if (e.target.name === "gender") {
+		// 	setGender(e.target.value);
+		// }
+		else if (e.target.value === "female") {
 			setGender(false);
 		} else if (e.target.value === "male") {
 			setGender(true);
 		}
 	}
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		const localToken = localStorage.getItem('token');
+		console.log(localToken);
+		/*const loggedInUser = localStorage.getItem('email')
+	 console.log(loggedInUser);*/
+		const userID = localStorage.getItem('userID')
+		/*console.log(userID);
+		const user = localStorage.getItem('user');
+		console.log(user); */
+
+		const tokenAuth = 'Bearer ' + localToken/* localStorage.getItem('token') */
+		// const updatedData =
+		// {
+		// 	nickname,
+		// 	email,
+		// 	password,
+		// 	avatar,
+		// 	dob,
+		// 	gender: gender === "male"
+		// };
+
 
 		await axios.put(`http://localhost:8000/users/${userID}`, {
-			nickname: nickname,
-			email: email,
-			password: password,
-			avatar: avatar,
-			dob: dob,
-			gender: gender
+			headers: {
+				Authorization: tokenAuth
+			}
+		}, {
+			nickname,
+			email,
+			password,
+			avatar,
+			dob,
+			gender
+
 		})
+
+			// const userData = updatedData.data;
+
+			// setNickname(userData.nickname);
+			// setEmail(userData.email);
+			// setAvatar(userData.avatar);
+			// setPassword(userData.password);
+			// setDob(userData.dob);
+			// setGender(userData.gender ? "male" : "female");
+			// } catch (err) {
+			// 	console.log(err);
+			// }
+
 			.then(res => {
-				console.log("successfully logged in")//if signup is ok
-			}).catch(err => console.log(err))
-		console.log(nickname, email, password, avatar, dob, gender)
-		navigate("/");
+				console.log(res.data)//full user data
+			}).catch(err =>
+				console.log(err));
 	}
+	// 	console.log(res.data.nickname)
+	/* setNickname(nickname)
+	setEmail(email)
+	setAvatar(avatar)
+	setPassword(password)
+	setDob(dob)
+	if (gender) {
+		setGender("male")
+	} else {
+		setGender("female")
+	} */
+	// }).catch(err => console.log(err))
+
+	/* .then(res => {
+		console.log("successfully logged in")//if signup is ok
+	}).catch(err => console.log(err))
+console.log(nickname, email, password, avatar, dob, gender) */
+	//navigate("/");
+
 
 
 
@@ -123,8 +237,8 @@ const Profile = () => {
 		<div>
 
 			<h1>Profile Page</h1>
-			<p className="welcome">{`You are authenticated, welcome ${userNickname} ! `}</p>
-			<img src={userAvatar} />
+			<p className="welcome">{`You are authenticated, welcome ${nickname} ! `}</p>
+			<img src={avatar} />
 			<br />
 			{/* <button onClick={handleChange}>Update Profile</button> */}
 			<div>
@@ -136,13 +250,13 @@ const Profile = () => {
 								Nickname:
 							</Grid>
 							<Grid item xs={8}>
-								{userNickname}
+								{nickname}
 							</Grid>
 							<Grid item xs={4}>
 								Email:
 							</Grid>
 							<Grid item xs={8}>
-								{userEmail}
+								{email}
 							</Grid>
 							<Grid item xs={4}>
 								Password:
@@ -154,19 +268,19 @@ const Profile = () => {
 								Avatar:
 							</Grid>
 							<Grid item xs={8}>
-								<img src={userAvatar} />
+								<img src={avatar} />
 							</Grid>
 							<Grid item xs={4}>
 								Date of birth:
 							</Grid>
 							<Grid item xs={8}>
-								{userDob}
+								{dob}
 							</Grid>
 							<Grid item xs={4}>
 								Gender:
 							</Grid>
 							<Grid item xs={8}>
-								{userGender}
+								{gender}
 							</Grid>
 						</Grid>
 					</Box>
@@ -180,8 +294,8 @@ const Profile = () => {
 							<img src="./bubbletealogo-edited-ps.png" className="logo" alt="logo" />
 							<div className="left">
 								<form onSubmit={handleSubmit}>
-									<input type="text" name="nickname" required
-										autoComplete="off" className="register-inputs" value={nickname} onChange={handleChange} placeholder="Nickname" />
+									<input type="text" name="nickname" /* required
+										autoComplete="off" */ className="register-inputs" value={nickname} onChange={handleChange} placeholder="Nickname" />
 									<input type="text" name="email" required
 										autoComplete="off" className="register-inputs" value={email} onChange={handleChange} placeholder="E-mail" />
 									{/* <input type="password" name="password" required
@@ -207,16 +321,25 @@ const Profile = () => {
 									</Box>
 									<br />
 									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										<DemoContainer components={['DatePicker']}>
-											{/* <DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} /> */}
-											<DatePicker
-												label="Date of birth"
-												name="dob"
-												value={dob}
-												onChange={(newValue) => setDob(newValue)}
-											/>
-										</DemoContainer>
+										{/* 	<DemoContainer components={['DatePicker']}> */}
+										{/* <DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} /> */}
+										{<DatePicker
+											label="Date of birth"
+											name="dob"
+											value={dob}
+
+											//value={dayjs(dob)}
+											/* onChange={(newValue) => setDob(newValue)} */
+											/* onChange={(newValue) => setDob(newValue.$d)} */
+											onChange={handleChange}
+										/>
+
+										}
+
+										{/* 	</DemoContainer> */}
 									</LocalizationProvider>
+
+
 									<br />
 									<FormControl>
 										<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>

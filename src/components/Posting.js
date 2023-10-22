@@ -122,6 +122,7 @@ const Posting = () => {
 		if (accessToken) {
 			setAuthenticated(true);
 
+			const userID = localStorage.getItem('userID')
 			/*Actual posting here */
 			const makePosting = async () => {
 				const tokenAuth = 'Bearer ' + localStorage.getItem('token')

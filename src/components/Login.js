@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useParams, useNavigate, Navigate, Link } from "react-router-dom";
 import axios from 'axios';
 
@@ -12,17 +12,21 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { ConnectingAirportsOutlined } from "@mui/icons-material";
 
+
+/* export const UserContext = createContext(""); */
+
 const Login = () => {
 	const navigate = useNavigate();
 
 	const [email, setEmail] = useState(null);
 	const [password, setPassword] = useState(null);
 	const [authenticated, setAuthenticated] = useState(false);
+	const [userID, setUserID] = useState(null);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const data = await axios.post("http://localhost:8000/users/login", { email, password });
+		const data = await axios.post(`http://localhost:8000/users/login`, { email, password });
 
 		if (data.data.token) {
 			setAuthenticated(true);
@@ -52,6 +56,7 @@ const Login = () => {
 			console.log(userID);
 			/* console.log(userDetails); */
 			localStorage.setItem('userID', userID);
+			console.log(localStorage.getItem('token'));
 
 			navigate("/home")
 		};
@@ -89,7 +94,7 @@ console.log(data)
 
 	return (
 		<div className="login">
-
+			{/* 			<UserContext.Provider value={userID}> */}
 			<img src="./bubbletealogo-edited-ps.png" className="logo" alt="logo" />
 			<div className="login-block">
 				<h1 className="login-title">Login</h1>
@@ -111,6 +116,8 @@ console.log(data)
 				<p>Not a user? Click below to register!</p>
 				<button className="submit-btn" onClick={() => navigate("/signup")}>Register</button>
 			</div>
+			{/* 			</UserContext.Provider> */}
+
 
 
 			{/* {authenticated ? <button onClick={testAuth}>test auth</button> : ''} */}
