@@ -23,27 +23,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
-
-/* const accessToken = localStorage.getItem('token'); */
-/* console.log(accessToken); */
-/* const loggedInUser = localStorage.getItem('email') */
-/* console.log(loggedInUser); */
-/* const userID = localStorage.getItem('userID') */
-/* console.log(userID); */
-/* const user = localStorage.getItem('user');
-console.log(user); */
-
-
 const Profile = () => {
 
 	const navigate = useNavigate();
 
-	/* const [userNickname, setUserNickname] = useState("");
-	const [userEmail, setUserEmail] = useState("");
-	const [userAvatar, setUserAvatar] = useState("");
-	const [userPassword, setUserPassword] = useState("");
-	const [userDob, setUserDob] = useState("");
-	const [userGender, setUserGender] = useState(""); */
 	const [callForm, setCallForm] = useState(false);
 
 	const [userID, setUserID] = useState(localStorage.getItem('userID'));
@@ -51,90 +34,52 @@ const Profile = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [avatar, setAvatar] = useState("");
+	/* const [dob, setDob] = useState(""); */
 	const [dob, setDob] = useState("");
 	const [gender, setGender] = useState("");
 
-	/* const [state, setState] = useState({
-		nickname: "",
-		email: "",
-		password: "",
-		avatar: "",
-		dob: "",
-		gender: ""
-	}) */
-
 	useEffect(() => {
 		const getUser = async () => {
+			try {
+				const localToken = localStorage.getItem('token');
+				/* console.log(accessToken); */
+				const loggedInUser = localStorage.getItem('email')
+				/* console.log(loggedInUser); */
+				const userID = localStorage.getItem('userID')
+				/* console.log(userID); */
+				const user = localStorage.getItem('user');
+				console.log(user);
 
-			const localToken = localStorage.getItem('token');
-			/* console.log(accessToken); */
-			const loggedInUser = localStorage.getItem('email')
-			/* console.log(loggedInUser); */
-			/* const userID = localStorage.getItem('userID') */
-			/* console.log(userID); */
-			const user = localStorage.getItem('user');
-			console.log(user);
-
-			const tokenAuth = 'Bearer ' + localToken /* localStorage.getItem('token') */
-			const dataUser = await axios.get(`http://localhost:8000/users/${userID}`, {
-				headers: {
-					Authorization: tokenAuth
-				}
-			})
-				.then(res => {
-					console.log(res.data)//full user data here
-					console.log(res.data.nickname)
-					setNickname(res.data.nickname)
-					setEmail(res.data.email)
-					setAvatar(res.data.avatar)
-					setPassword(res.data.password)
-					setDob(res.data.dob)
-					if (res.data.gender) {
-						setGender("male")
-					} else {
-						setGender("female")
+				const tokenAuth = 'Bearer ' + localToken; /* localStorage.getItem('token') */
+				const { data } = await axios.get(`http://localhost:8000/users/${userID}`, {
+					headers: {
+						Authorization: tokenAuth
 					}
+				})
+				console.log(data)//full user data here
+				console.log(data.nickname)
+				setNickname(data.nickname)
+				setEmail(data.email)
+				setAvatar(data.avatar)
+				setPassword(data.password)
+				setDob(data.dob)
+				setGender(data.gender ? "male" : "female");
 
-				}).catch(err => console.log(err))
-
-			// const userData = dataUser.data;
-
-			// setNickname(userData.nickname);
-			// setEmail(userData.email);
-			// setAvatar(userData.avatar);
-			// setPassword(userData.password);
-			// setDob(userData.dob);
-			// setGender(userData.gender ? "male" : "female");
-
-		}
+			} catch (err) {
+				console.log(err)
+			}
+		};
 		getUser();
-	}, [])
+	}, []);
 
 
 	//Update user details:
 	const callUpdateForm = () => {
-		console.log("calling form")
-		setCallForm(true)
+		/* console.log("calling form") */
+		setCallForm(true);
 	}
 
 	const handleChange = (e) => {
-		// const { name, value } = e.target;
-
-		// if (name === 'nickname') {
-		// 	setNickname(value);
-		// } else if (name === 'email') {
-		// 	setEmail(value);
-		// } else if (name === "password") {
-		// 	setPassword(value);
-		// } else if (name === "avatar") {
-		// 	setAvatar(value);
-		// } else if (name === "dob") {
-		// 	setDob(value);
-		// } else if (name === "gender") {
-		// 	setGender(value);
-		// }
-
-		// const handleChange = (e) => {
 		if (e.target.name === 'nickname') {
 			setNickname(e.target.value);
 		} else if (e.target.name === 'email') {
@@ -146,92 +91,48 @@ const Profile = () => {
 		} else if (e.target.name === "dob") {
 			setDob(e.target.value);
 			console.log(dob)
+		} else if (e.target.name === "gender") {
+			setGender(e.target.value === "female");
 		}
-		// else if (e.target.name === "gender") {
-		// 	setGender(e.target.value);
-		// }
-		else if (e.target.value === "female") {
+		/* else if (e.target.value === "female") {
 			setGender(false);
 		} else if (e.target.value === "male") {
 			setGender(true);
-		}
-	}
+		} */
+	};
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const localToken = localStorage.getItem('token');
-		console.log(localToken);
-		/*const loggedInUser = localStorage.getItem('email')
-	 console.log(loggedInUser);*/
-		const userID = localStorage.getItem('userID')
-		/*console.log(userID);
-		const user = localStorage.getItem('user');
-		console.log(user); */
+		try {
+			const localToken = localStorage.getItem('token');
+			console.log(localToken);
+			/*const loggedInUser = localStorage.getItem('email')
+		 console.log(loggedInUser);*/
+			const userID = localStorage.getItem('userID')
+			/*console.log(userID);
+			const user = localStorage.getItem('user');
+			console.log(user); */
 
-		const tokenAuth = 'Bearer ' + localToken/* localStorage.getItem('token') */
-		// const updatedData =
-		// {
-		// 	nickname,
-		// 	email,
-		// 	password,
-		// 	avatar,
-		// 	dob,
-		// 	gender: gender === "male"
-		// };
-
-
-		await axios.put(`http://localhost:8000/users/${userID}`, {
-			headers: {
-				Authorization: tokenAuth
-			}
-		}, {
-			nickname,
-			email,
-			password,
-			avatar,
-			dob,
-			gender
-
-		})
-
-			// const userData = updatedData.data;
-
-			// setNickname(userData.nickname);
-			// setEmail(userData.email);
-			// setAvatar(userData.avatar);
-			// setPassword(userData.password);
-			// setDob(userData.dob);
-			// setGender(userData.gender ? "male" : "female");
-			// } catch (err) {
-			// 	console.log(err);
-			// }
-
-			.then(res => {
-				console.log(res.data)//full user data
-			}).catch(err =>
-				console.log(err));
-	}
-	// 	console.log(res.data.nickname)
-	/* setNickname(nickname)
-	setEmail(email)
-	setAvatar(avatar)
-	setPassword(password)
-	setDob(dob)
-	if (gender) {
-		setGender("male")
-	} else {
-		setGender("female")
-	} */
-	// }).catch(err => console.log(err))
-
-	/* .then(res => {
-		console.log("successfully logged in")//if signup is ok
-	}).catch(err => console.log(err))
-console.log(nickname, email, password, avatar, dob, gender) */
-	//navigate("/");
+			const tokenAuth = 'Bearer ' + localToken;/* localStorage.getItem('token') */
+			const updatedData = {
+				nickname,
+				email,
+				password,
+				avatar,
+				dob,
+				gender,
+			};
 
 
-
+			await axios.put(`http://localhost:8000/users/${userID}`, updatedData, {
+				headers: {
+					Authorization: tokenAuth
+				}
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	return (
 		<div>
@@ -295,11 +196,11 @@ console.log(nickname, email, password, avatar, dob, gender) */
 							<div className="left">
 								<form onSubmit={handleSubmit}>
 									<input type="text" name="nickname" /* required
-										autoComplete="off" */ className="register-inputs" value={nickname} onChange={handleChange} placeholder="Nickname" />
+                    autoComplete="off" */ className="register-inputs" value={nickname} onChange={handleChange} placeholder="Nickname" />
 									<input type="text" name="email" required
 										autoComplete="off" className="register-inputs" value={email} onChange={handleChange} placeholder="E-mail" />
 									{/* <input type="password" name="password" required
-										autoComplete="off" className="register-inputs" value={password} onChange={handleChange} placeholder="Password" /> */}
+                    autoComplete="off" className="register-inputs" value={password} onChange={handleChange} placeholder="Password" /> */}
 									<Box sx={{ minWidth: 120 }}>
 										<FormControl fullWidth>
 											<InputLabel id="demo-simple-select-label">Avatar</InputLabel>
@@ -321,20 +222,19 @@ console.log(nickname, email, password, avatar, dob, gender) */
 									</Box>
 									<br />
 									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										{/* 	<DemoContainer components={['DatePicker']}> */}
+										{/* <DemoContainer components={['DatePicker']}> */}
 										{/* <DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} /> */}
-										{<DatePicker
-											label="Date of birth"
+										<DatePicker
+											/* label="Date of birth"
 											name="dob"
-											value={dob}
+											value={dob} */
 
-											//value={dayjs(dob)}
-											/* onChange={(newValue) => setDob(newValue)} */
-											/* onChange={(newValue) => setDob(newValue.$d)} */
-											onChange={handleChange}
+											value={dayjs(dob)}
+											onChange={(newValue) => setDob(newValue.format('YYYY-MM-DD'))}
+
 										/>
 
-										}
+
 
 										{/* 	</DemoContainer> */}
 									</LocalizationProvider>
