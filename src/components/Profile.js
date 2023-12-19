@@ -34,7 +34,6 @@ const Profile = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [avatar, setAvatar] = useState("");
-	/* const [dob, setDob] = useState(""); */
 	const [dob, setDob] = useState("");
 	const [gender, setGender] = useState("");
 
