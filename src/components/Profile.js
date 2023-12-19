@@ -227,14 +227,9 @@ const Profile = () => {
 											/* label="Date of birth"
 											name="dob"
 											value={dob} */
-
 											value={dayjs(dob)}
 											onChange={(newValue) => setDob(newValue.format('YYYY-MM-DD'))}
-
 										/>
-
-
-
 										{/* 	</DemoContainer> */}
 									</LocalizationProvider>
 
@@ -245,27 +240,18 @@ const Profile = () => {
 										<RadioGroup
 											aria-labelledby="demo-radio-buttons-group-label"
 											defaultValue="false"
-
-
-										/* 	name="radio-buttons-group" */
-										/* value={gender} */
 										>
 											<FormControlLabel name="gender" value="female" control={<Radio onChange={(newValue) => setGender(false)} />} label="Female" />
 											<FormControlLabel name="gender" value="male" control={<Radio onChange={(newValue) => setGender(true)} />} label="Male" />
 										</RadioGroup>
 									</FormControl>
-
 									<br />
 									<button type="submit" name="signup_submit" value="Sign me up">Submit</button>
-
 								</form>
 							</div>
 						</div>
 						: ""
-
 				}
-
-
 			</div >
 		</div >
 	)
